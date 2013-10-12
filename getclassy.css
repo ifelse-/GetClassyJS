@@ -1,0 +1,12 @@
+@charset "UTF-8";
+/* CSS Document */
+
+body,.getclassy,.grid {
+	padding:0px;
+	margin:0px;}
+
+.email_no_match,.email_error_msg,.phone_error_msg,.error_msg {
+	position: absolute;
+	color:red;
+	background-color:#CCC;
+	padding:5px;}

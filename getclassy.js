@@ -146,6 +146,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	var speedArr = new Array( "fast", "slow" );
 	var setFunction = false;
 	var setFunctionName;
+	var functionName;
 	
 	$( "[class*='slideSpeed']" ).each ( function () {
     var elClasses = $( this ).attr ('class').split ( ' ' );
@@ -170,8 +171,8 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 
       for ( var index in elClasses ) {
         if ( elClasses[index].match ( /^doAfter_\w+$/ ) ) {
-            var functionName = elClasses[index].split ( '_' )[1];
-            //alert(classNum);
+            functionName = elClasses[index].split ( '_' )[1];
+            //alert(functionName);
 			if(functionName){
 			setFunction = true;
 			//Eval and Covert back into function
@@ -183,7 +184,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
     } );
 	//------ Get function name end
 	
-//------------ function		
+//------------ function	setupAnimation element names	
 	function setupAnimationSet(e) {
 		//Loop until we get class name
 		for (var i=0;i<9999;i++)
@@ -196,10 +197,29 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 			}
 		}
 	}
-	setupAnimationSet('slideUp');
-	setupAnimationSet('slideDown');
-	setupAnimationSet('slideRight');
-	setupAnimationSet('slideLeft');
+	
+	
+	//Create array search for animation class name 
+	var setupAnimArr = ['slideUp','slideDown','slideRight','slideLeft'];
+	for (var i = 0; i < setupAnimArr.length; i++) {
+		for (var k = 0; k < 999; k++) {
+    //alert('.'+setupAnimArr[i]);
+    if($('body').find('.'+setupAnimArr[i]+'_'+k).length){
+		//alert('found one');
+		setupAnimationSet(setupAnimArr[i]);
+		
+		}
+		
+	  }
+    }
+	
+
+
+	//Event animation
+	//setupAnimationSet('click_slideUp');
+	//setupAnimationSet('click_slideDown');
+	//setupAnimationSet('click_slideRight');
+	//setupAnimationSet('click_slideLeft');
 	
 //------------ function	
 	function animation(ele, distance) {
@@ -222,7 +242,11 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		
 	$("."+ele).animate(direction, speed, function() {
 		// Animation complete.
-		runFunction()
+		if($("."+ele).hasClass('doAfter_'+functionName)){
+	    runFunction();
+		}
+		//return false;
+		
 	  });
 	  
     }  
@@ -241,6 +265,10 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	function dothis() {
 		alert("working");
 		}
+		
+	function dothissecond() {
+		alert("workingsec");
+		}	
 	
 //------------ function			
 	

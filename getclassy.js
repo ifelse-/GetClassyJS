@@ -148,22 +148,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	var setFunctionName;
 	var functionName;
 	
-	$( "[class*='slideSpeed']" ).each ( function () {
-    var elClasses = $( this ).attr ('class').split ( ' ' );
-
-      for ( var index in elClasses ) {
-        if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
-            var classNum = elClasses[index].split ( '_' )[1];
-            //alert ( classNum );
-			if($.inArray(classNum, speedArr) > -1){
-				speed = classNum;
-				} else {
-				speed = parseInt(classNum);	
-					}
-            break;
-        }
-      }
-    });
+	
 	
 	//------ Get function name
 	$( "[class*='doAfter']" ).each ( function () {
@@ -239,6 +224,32 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	if(ele === "slideRight_"+i){direction = goRight;}
 	if(ele === "slideLeft_"+i){direction = goLeft;}
 	}
+	
+	
+	
+	//Check for each slidespeed in dom
+	$( "[class*='slideSpeed']" ).each ( function () {
+    var elClasses = $( this ).attr ('class').split ( ' ' );
+      for ( var index in elClasses ) {
+        if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
+			
+            var classNum = elClasses[index].split ( '_' )[1];
+			var classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
+			        
+			
+			if($('.'+ele).hasClass(classFullName)) {
+				alert('yes');
+				}
+			
+			if($.inArray(classNum, speedArr) > -1){
+				speed = classNum;
+				} else {
+				speed = parseInt(classNum);	
+					}
+            break;
+        }
+      }
+    });
 		
 	$("."+ele).animate(direction, speed, function() {
 		// Animation complete.

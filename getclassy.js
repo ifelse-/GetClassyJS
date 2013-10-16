@@ -175,9 +175,37 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		for (var i=0;i<9999;i++)
 		{
 			if($('body').find('.'+e+'_'+i).length) {
+				
+			//Check for each slidespeed in dom
+	$( "[class*='slideSpeed']" ).each ( function () {
+    var elClasses = $( this ).attr ('class').split ( ' ' );
+      for ( var index in elClasses ) {
+        if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
+			
+            var classNum = elClasses[index].split ( '_' )[1];
+			var classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
+			        
+			/*
+			if($('.'+ele).hasClass(classFullName)) {
+				alert('yes');
+				}
+			*/	
+			
+			if($.inArray(classNum, speedArr) > -1){
+				speed = classNum;
+				animation(e+'_'+i, i, speed);
+				} else {
+				speed = parseInt(classNum);	
+				animation(e+'_'+i, i, speed);
+				}
+            break;
+        }
+      }
+    });	
+				
 			  //alert('got it');
 			 //INIT Start up animation function
-			  animation(e+'_'+i, i); 
+			   
 			  return false;
 			}
 		}
@@ -207,7 +235,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	//setupAnimationSet('click_slideLeft');
 	
 //------------ function	
-	function animation(ele, distance) {
+	function animation(ele, distance, speed) {
 
 	var goTop = {marginBottom: distance+"px"};
 	var goBottom = {marginTop: distance+"px"};
@@ -227,29 +255,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	
 	
 	
-	//Check for each slidespeed in dom
-	$( "[class*='slideSpeed']" ).each ( function () {
-    var elClasses = $( this ).attr ('class').split ( ' ' );
-      for ( var index in elClasses ) {
-        if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
-			
-            var classNum = elClasses[index].split ( '_' )[1];
-			var classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
-			        
-			
-			if($('.'+ele).hasClass(classFullName)) {
-				alert('yes');
-				}
-			
-			if($.inArray(classNum, speedArr) > -1){
-				speed = classNum;
-				} else {
-				speed = parseInt(classNum);	
-					}
-            break;
-        }
-      }
-    });
+	
 		
 	$("."+ele).animate(direction, speed, function() {
 		// Animation complete.

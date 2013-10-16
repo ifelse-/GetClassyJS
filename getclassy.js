@@ -238,15 +238,18 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 			        
 			
 			if($('.'+ele).hasClass(classFullName)) {
-				alert('yes');
-				}
-			
-			if($.inArray(classNum, speedArr) > -1){
+				//alert('yes');
+				
+				if($.inArray(classNum, speedArr) > -1){
 				speed = classNum;
 				} else {
 				speed = parseInt(classNum);	
 					}
             break;
+				
+				}
+			
+			
         }
       }
     });
@@ -278,7 +281,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		}
 		
 	function dothissecond() {
-		alert("workingsec");
+		//alert("workingsec");
 		}	
 	
 //------------ function			

@@ -147,27 +147,10 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	var setFunction = false;
 	var setFunctionName;
 	var functionName;
+	var classNum;
+	var classFullName;
 	
-	
-	
-	//------ Get function name
-	$( "[class*='doAfter']" ).each ( function () {
-    var elClasses = $( this ).attr ('class').split ( ' ' );
 
-      for ( var index in elClasses ) {
-        if ( elClasses[index].match ( /^doAfter_\w+$/ ) ) {
-            functionName = elClasses[index].split ( '_' )[1];
-            //alert(functionName);
-			if(functionName){
-			setFunction = true;
-			//Eval and Covert back into function
-			setFunctionName = eval(functionName);
-				}
-            break;
-        }
-      }
-    } );
-	//------ Get function name end
 	
 //------------ function	setupAnimation element names	
 	function setupAnimationSet(e) {
@@ -182,8 +165,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
       for ( var index in elClasses ) {
         if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
 			
-            var classNum = elClasses[index].split ( '_' )[1];
-			var classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
+            classNum = elClasses[index].split ( '_' )[1];
 			        
 			/*
 			if($('.'+ele).hasClass(classFullName)) {
@@ -243,6 +225,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	var goLeft = {marginRight: distance+"px"};
 	var direction;
 	var currentEve;
+	var afterAnimArr = [];
 
     //Use same element name for direction 
 	for (var i=0;i<9999;i++)
@@ -260,12 +243,11 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
       for ( var index in elClasses ) {
         if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
 			
-            var classNum = elClasses[index].split ( '_' )[1];
-			var classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
+            classNum = elClasses[index].split ( '_' )[1];
+			classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
 			        
-			
+			//Check for same correct classname
 			if($('.'+ele).hasClass(classFullName)) {
-				//alert('yes');
 				
 				if($.inArray(classNum, speedArr) > -1){
 				speed = classNum;
@@ -274,23 +256,60 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 					}
             break;
 				
+				}	
+        }
+      }
+    });
+	
+	//------ Get function name
+	$( "[class*='doAfter']" ).each ( function () {
+    var elClasses = $( this ).attr ('class').split ( ' ' );
+	
+      for ( var index in elClasses ) {
+        if ( elClasses[index].match ( /^doAfter_\w+$/ ) ) {
+            functionName = elClasses[index].split ( '_' )[1];
+			classFunctionName = elClasses[index].match ( /^doAfter_\w+$/);
+			
+			
+			afterAnimArr.push(functionName);
+			
+			//Check for same correct classname
+			if($('.'+ele).hasClass(classFunctionName)) {
+				//alert(classFunctionName);
+				
+				if(functionName){
+			setFunction = true;
+			//Eval and Covert back into function
+			setFunctionName = eval(functionName);
 				}
+            break;
+				
+				}	
+			
 			
 			
         }
       }
-    });
+
+    } );
+	//------ Get function name end
 
 		
 	$("."+ele).animate(direction, speed, function() {
 		// Animation complete.
+		
 		if($("."+ele).hasClass('doAfter_'+functionName)){
+		//alert(functionName);
+		//alert(afterAnimArr);
+		
+		for(var i=0; i<afterAnimArr.length; i++) {
+	     console.log(afterAnimArr[i])
+        }
+			
 	    runFunction();
 		}
 		//return false;
-		
 	  });
-	  
     }  
 	
 //------------ function		
@@ -299,8 +318,9 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		if(setFunction === true){
 		  setFunctionName();
 			} else {
+		alert("no function")
 				}
-		return false;
+		//return false;
 		}
 	
 //------------ function		
@@ -309,12 +329,12 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		}
 		
 	function dothissecond() {
-		//alert("workingsec");
+		alert("workingsec");
 		}	
 	
 //------------ function			
 	
-	function eventListener(a, eve){
+  function eventListener(a, eve){
 	//eventListener(element, event, element2)	
 		var eventArr = ["click", "change", "blur"];
 		

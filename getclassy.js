@@ -142,9 +142,9 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
   animationEngine: function(obj) {
 	  
 	//------ Animation speed setup
-	var speed;
-	var speedArr = new Array( "fast", "slow" );
-	var setFunction = false;
+	var speed; //Set speed amount
+	var speedArr = new Array( "fast", "slow" ); 
+	var setFunction = false; //Active animation after complete
 	var setFunctionName;
 	var functionName;
 	var classNum;
@@ -164,25 +164,22 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	//------ Get after animation done function class name
 	$( "[class*='doAfter']" ).each ( function () {
     var elClasses = $( this ).attr ('class').split ( ' ' );
-	
       for ( var index in elClasses ) {
         if ( elClasses[index].match ( /^doAfter_\w+$/ ) ) {
+			 
             functionName = elClasses[index].split ( '_' )[1];
 			classFunctionName = elClasses[index].match ( /^doAfter_\w+$/);
-	
-			//afterAnimArr.push(functionName);
+		
+			//console.log('.'+e+'_'+i);
 			
 			//Check for same correct classname
-			if($('.'+e).hasClass(classFunctionName)) {
-				
-			   if(functionName){
-				alert(functionName);
+			if($('.'+e+'_'+i).hasClass(classFunctionName)) {
+				console.log(functionName);
 				setFunction = true;
 				//Eval and Covert back into function
 				setFunctionName = eval(functionName);
-					}
-				break;
-				
+						
+				break;	
 			 }	
           }
       }
@@ -238,7 +235,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
     }
 	
 	
-//------------ function	
+//------------ animation function	
 	function animation(ele, distance, speed, functionName) {
 		
 	console.log(ele + ' ' + distance + ' ' + speed + ' ' + functionName);	
@@ -260,34 +257,6 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	if(ele === "slideLeft_"+i){direction = goLeft;}
 	}
 	
-	
-/*	
-	//Check for each slidespeed in dom
-	$( "[class*='slideSpeed']" ).each ( function () {
-    var elClasses = $( this ).attr ('class').split ( ' ' );
-      for ( var index in elClasses ) {
-        if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
-			
-            classNum = elClasses[index].split ( '_' )[1];
-			classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
-			        
-			//Check for same correct classname
-			if($('.'+ele).hasClass(classFullName)) {
-				
-				if($.inArray(classNum, speedArr) > -1){
-			//	speed = classNum;
-				} else {
-			//	speed = parseInt(classNum);	
-					}
-            break;
-				
-				}	
-           }
-      }
-    });//END 
-*/	
-	
-	
 	//------ * Animation parent function *
 	$("."+ele).animate(direction, speed, function() {
 		// Animation complete.
@@ -295,14 +264,6 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		//console.log(ele + "this is function name" + 'doAfter_'+functionName);
 		
 		if($("."+ele).hasClass('doAfter_'+functionName)){
-		
-		//alert(afterAnimArr);
-		
-		/*
-		for(var i=0; i<afterAnimArr.length; i++) {
-	     console.log(afterAnimArr[i])
-        }
-		*/
 		
 		runFunction();
 		}

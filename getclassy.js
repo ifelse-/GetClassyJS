@@ -142,9 +142,9 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
   animationEngine: function(obj) {
 	  
 	//------ Animation speed setup
-	var speed; //Set speed amount
-	var speedArr = new Array( "fast", "slow" ); 
-	var setFunction = false; //Active animation after complete
+	var speed;
+	var speedArr = new Array( "fast", "slow" );
+	var setFunction = false;
 	var setFunctionName;
 	var functionName;
 	var classNum;
@@ -160,34 +160,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		{
 			if($('body').find('.'+e+'_'+i).length) {
 				
-	
-	//------ Get after animation done function class name
-	$( "[class*='doAfter']" ).each ( function () {
-    var elClasses = $( this ).attr ('class').split ( ' ' );
-      for ( var index in elClasses ) {
-        if ( elClasses[index].match ( /^doAfter_\w+$/ ) ) {
-			 
-            functionName = elClasses[index].split ( '_' )[1];
-			classFunctionName = elClasses[index].match ( /^doAfter_\w+$/);
-		
-			//console.log('.'+e+'_'+i);
-			
-			//Check for same correct classname
-			if($('.'+e+'_'+i).hasClass(classFunctionName)) {
-				console.log(functionName);
-				setFunction = true;
-				//Eval and Covert back into function
-				setFunctionName = eval(functionName);
-						
-				break;	
-			 }	
-          }
-      }
-
-    });//END 			
-				
-				
-	//------ Check for each slidespeed in dom
+			//Check for each slidespeed in dom
 	$( "[class*='slideSpeed']" ).each ( function () {
     var elClasses = $( this ).attr ('class').split ( ' ' );
       for ( var index in elClasses ) {
@@ -211,17 +184,19 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
             break;
         }
       }
-    });	//END
-		
-	         return false;
-			 
-			}//END LOOP
+    });	
+				
+			  //alert('got it');
+			 //INIT Start up animation function
+			   
+			  return false;
+			}
 		}
 	}
 	
 	
 	//Create array search for animation class name 
-	var setupAnimArr = ['slideUp','slideDown','slideRight','slideLeft', 'click_slideUp', 'click_slideDown', 'click_slideRight', 'click_slideLeft'];
+	var setupAnimArr = ['slideUp','slideDown','slideRight','slideLeft'];
 	for (var i = 0; i < setupAnimArr.length; i++) {
 		for (var k = 0; k < 999; k++) {
     //alert('.'+setupAnimArr[i]);
@@ -234,11 +209,18 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	  }
     }
 	
+
+
+	//Event animation
+	//setupAnimationSet('click_slideUp');
+	//setupAnimationSet('click_slideDown');
+	//setupAnimationSet('click_slideRight');
+	//setupAnimationSet('click_slideLeft');
 	
-//------------ animation function	
-	function animation(ele, distance, speed, functionName) {
+//------------ function	
+	function animation(ele, distance, speed) {
 		
-	console.log(ele + ' ' + distance + ' ' + speed + ' ' + functionName);	
+		
 	
 	var goTop = {marginBottom: distance+"px"};
 	var goBottom = {marginTop: distance+"px"};
@@ -257,6 +239,59 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 	if(ele === "slideLeft_"+i){direction = goLeft;}
 	}
 	
+	
+	//Check for each slidespeed in dom
+	$( "[class*='slideSpeed']" ).each ( function () {
+    var elClasses = $( this ).attr ('class').split ( ' ' );
+      for ( var index in elClasses ) {
+        if ( elClasses[index].match ( /^slideSpeed_\w+$/ ) ) {
+			
+            classNum = elClasses[index].split ( '_' )[1];
+			classFullName = elClasses[index].match ( /^slideSpeed_\w+$/ );
+			        
+			//Check for same correct classname
+			if($('.'+ele).hasClass(classFullName)) {
+				
+				if($.inArray(classNum, speedArr) > -1){
+				speed = classNum;
+				} else {
+				speed = parseInt(classNum);	
+					}
+            break;
+				
+				}	
+           }
+      }
+    });//END 
+	
+	//------ Get after animation do this
+	$( "[class*='doAfter']" ).each ( function () {
+    var elClasses = $( this ).attr ('class').split ( ' ' );
+	
+      for ( var index in elClasses ) {
+        if ( elClasses[index].match ( /^doAfter_\w+$/ ) ) {
+            functionName = elClasses[index].split ( '_' )[1];
+			classFunctionName = elClasses[index].match ( /^doAfter_\w+$/);
+	
+			afterAnimArr.push(functionName);
+			
+			//Check for same correct classname
+			if($('.'+ele).hasClass(classFunctionName)) {
+				
+			   if(functionName){
+					//alert(classFunctionName);
+				setFunction = true;
+				//Eval and Covert back into function
+				setFunctionName = eval(functionName);
+					}
+				break;
+				
+			 }	
+          }
+      }
+
+    });//END 
+	
 	//------ * Animation parent function *
 	$("."+ele).animate(direction, speed, function() {
 		// Animation complete.
@@ -264,6 +299,14 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		//console.log(ele + "this is function name" + 'doAfter_'+functionName);
 		
 		if($("."+ele).hasClass('doAfter_'+functionName)){
+		
+		//alert(afterAnimArr);
+		
+		/*
+		for(var i=0; i<afterAnimArr.length; i++) {
+	     console.log(afterAnimArr[i])
+        }
+		*/
 		
 		runFunction();
 		}

@@ -159,8 +159,9 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		for (var i=0;i<9999;i++)
 		{
 			if($('body').find('.'+e+'_'+i).length) {
-				
-			//Check for each slidespeed in dom
+	
+			
+		//Check for each slidespeed in dom
 	$( "[class*='slideSpeed']" ).each ( function () {
     var elClasses = $( this ).attr ('class').split ( ' ' );
       for ( var index in elClasses ) {
@@ -168,12 +169,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 			
             classNum = elClasses[index].split ( '_' )[1];
 			        
-			/*
-			if($('.'+ele).hasClass(classFullName)) {
-				alert('yes');
-				}
-			*/	
-			
+		
 			if($.inArray(classNum, speedArr) > -1){
 				speed = classNum;
 				animation(e+'_'+i, i, speed);
@@ -185,7 +181,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
         }
       }
     });	
-				
+	
 			  //alert('got it');
 			 //INIT Start up animation function
 			   
@@ -205,7 +201,6 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 		setupAnimationSet(setupAnimArr[i]);
 		
 		}
-		
 	  }
     }
 	
@@ -220,8 +215,6 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 //------------ function	
 	function animation(ele, distance, speed) {
 		
-		
-	
 	var goTop = {marginBottom: distance+"px"};
 	var goBottom = {marginTop: distance+"px"};
 	var goRight = {marginLeft: distance+"px"};
@@ -256,7 +249,7 @@ var validate_pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\
 				speed = classNum;
 				} else {
 				speed = parseInt(classNum);	
-					}
+				}
             break;
 				
 				}	
